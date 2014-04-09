@@ -2,7 +2,8 @@ import java.io.*;
 import javax.sound.sampled.*;
 
 class Player {
-	public static void main(String[] args) {
+
+	public static void main(String[] args) throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
 		AudioInputStream s = validate(args);
 		AudioFormat format = s.getFormat();
 
@@ -20,7 +21,7 @@ class Player {
 		a.start();
 		b.start();
 		a.join();
-		b.join():
+		b.join();
 
 	}//main
 
@@ -32,4 +33,5 @@ class Player {
 
 		return AudioSystem.getAudioInputStream(new File(args[0]));
 	}//check if audio file supplied as argument
+
 }//class

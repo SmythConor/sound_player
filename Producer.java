@@ -1,3 +1,5 @@
+import java.io.*;
+import javax.sound.sampled.*;
 class Producer implements Runnable {
 	private BoundedBuffer buffer;
 

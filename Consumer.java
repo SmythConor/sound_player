@@ -1,3 +1,5 @@
+import java.io.*;
+import javax.sound.sampled.*;;
 class Consumer extends Thread {
 	private BoundedBuffer buffer;
 
@@ -8,7 +10,7 @@ class Consumer extends Thread {
 	public void run() {
 		try {
 			/* read a chunk and play it here */
-			byte[] audioChunk = removeChunk();
+			byte[] audioChunk = buffer.removeChunk();
 			SourceDataLine line;
 
 			line = (SourceDataLine) AudioSystem.getLine(info);

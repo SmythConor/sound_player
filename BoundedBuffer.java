@@ -1,6 +1,6 @@
 class BoundedBuffer {
 	byte[] audioChunks;
-	
+
 	int nextIn;
 	int nextOut;
 	int size;
@@ -8,7 +8,7 @@ class BoundedBuffer {
 	boolean roomAvailable;
 
 	public BoundedBuffer() {
-		audioChunks = new Byte[10];
+		audioChunks = new byte[10];
 		size = 10;
 		roomAvailable = true;
 		dataAvailable = false;
@@ -36,6 +36,7 @@ class BoundedBuffer {
 	}//insetChunk
 
 	public synchronized byte removeChunk() {
+		byte out = 0;
 		if(!dataAvailable) { //if no data wait for signal
 			try {
 				wait();
@@ -44,8 +45,8 @@ class BoundedBuffer {
 		}
 
 		else {
-			byte out = audioChunks[nextOut % 10];
-			audioChunks[nextOut % 10] = null;
+			out = audioChunks[nextOut % 10];
+			//audioChunks[nextOut % 10] = null;
 
 			nextOut++;
 			size--;
@@ -53,12 +54,9 @@ class BoundedBuffer {
 			if(size == 0) {
 				dataAvailable = false;
 			}
-
+			notifyAll();
 		}
 
-		notifyAll();
 		return out;
-
 	}//removeChunk
-
 }//BoundedBuffer
