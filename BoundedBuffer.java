@@ -22,12 +22,20 @@ class BoundedBuffer {
 
 	public BoundedBuffer(size) {
 		audioChunk = new Byte[size];
-		roomAvailable = false;
+		roomAvailable = true;
 		dataAvailable = false;
 	}
 
 	public void insertChunk() {
-		
+		if(!roomAvailable) {
+			try {
+				wait();
+			} catch (InterruptedException e) { }
+		}
+
+		if(size > 9) {
+			:
+		}
 	}
 
 	public void removeChunk() {
