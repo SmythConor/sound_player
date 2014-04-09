@@ -7,18 +7,19 @@ class Producer implements Runnable {
 
 	public void run() {
 		try {
-			buffer.insertChunk();
+		/* read in one second chunk here */
+			int oneSecond = (int) (format.getChannels() * format.getSampleRate() * format.getSampleSizeInBits() / 8);
+			byte[] audioChunk = new byte[oneSecond];
+			
+			/* insert chunk here */
+			buffer.insertChunk(chunk);
 			Thread.sleep((int)(Math.random() * 100));
 		} catch (InterruptedException e) { }
+
+		finally {
+			System.out.println("Goodbye from Producer (" + Thread.currentThread().getName() + ")");
+		}//goodbye message
 
 	}
 
 }
-
-/* Must constantly read from audio stream 
- * and add to buffer 
- */
-
-/* Must close thread properly too
- *	Not usre if relevant here
- */

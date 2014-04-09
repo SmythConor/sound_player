@@ -13,7 +13,7 @@ class Player {
 			System.exit(1);
 		}
 
-		BoundedBuffer buffer = new BoundedBuffer(10);
+		BoundedBuffer buffer = new BoundedBuffer();
 		Thread a = new Thread(new Producer(buffer));
 		Thread b = new Thread(new Consumer(buffer));
 

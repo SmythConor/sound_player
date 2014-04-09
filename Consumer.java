@@ -6,11 +6,30 @@ class Consumer extends Thread {
 	}
 
 	public void run() {
+		try {
+			/* read a chunk and play it here */
+			byte[] audioChunk = removeChunk();
+			SourceDataLine line;
+
+			line = (SourceDataLine) AudioSystem.getLine(info);
+			line.open(format);
+			line.start();
+
+			int bytesRead = s.read(audioChunk);
+
+			line.write(audioChunk, 0, bytesRead);
+			line.drain();
+			line.stop();
+
+			line.close();
+
+			Thead.sleep((int)(Math.random() * 100));
+		} catch (InterruptedException e) { }
+
+		finally {
+			System.out.println("Goodbye from Consumer (" + Thread.currentThread().getName() + ")");
+		}//goodbye message
 
 	}
 
 }
-
-/* Must take chunks off buffer and
- * write to audio device
- */
