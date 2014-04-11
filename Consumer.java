@@ -2,33 +2,29 @@ import java.io.*;
 import javax.sound.sampled.*;;
 class Consumer extends Thread {
 	private BoundedBuffer buffer;
+	private SourceDataLine line;
 
-	public Consumer(BoundedBuffer b) {
+	public Consumer(BoundedBuffer b, SourceDataLine l1) {
 		buffer = b;
+		line= l1;
 	}
 
 	public void run() {
 		try {
 			/* read a chunk and play it here */
-			byte[] audioChunk = buffer.removeChunk();
-			SourceDataLine line;
 
-			line = (SourceDataLine) AudioSystem.getLine(info);
-			line.open(format);
-			line.start();
+			byte[] audioChunk = new byte[buffer.removeChunk()];
+			//int bytesRead = s.read(audioChunk);
 
-			int bytesRead = s.read(audioChunk);
-
-			line.write(audioChunk, 0, bytesRead);
+			line.write(audioChunk, 0, 1);
 			line.drain();
 			line.stop();
 
-			line.close();
-
-			Thead.sleep((int)(Math.random() * 100));
+			Thread.sleep((int)(Math.random() * 100));
 		} catch (InterruptedException e) { }
 
 		finally {
+			line.close();
 			System.out.println("Goodbye from Consumer (" + Thread.currentThread().getName() + ")");
 		}//goodbye message
 
