@@ -1,0 +1,10 @@
+Members: 
+	Conor Smyth 12452382
+	Adam O'Flynn 12378651 
+	Kate Falahee 12417922
+	Owen Lennon 12379716
+
+Problems:
+1) The problems we faced with this program is that every ~10 seconds the sound skips.
+2) Another problem we had is that the threads won't cleanly close.
+3) We also could not implement the 'x' keypress that would exit the program.
