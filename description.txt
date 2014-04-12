@@ -1,0 +1,15 @@
+Members: 
+	Conor Smyth 12452382
+	Adam O'Flynn 12378651 
+	Kate Falahee 12417922
+	Owen Lennon 12379716
+
+1.	We have up to the fourth part of the assignment done
+2.	Our array is of size ten and holds segements of one second long.
+3.	Run the programme through the command prompt.
+4.	We have two threads, a consumer thread and a producer thread.
+5.	Our code runs through the problem as such, the producer thread (when the critical memory space is available ie the array),
+	reads one second segements and adds them to the buffer up to ten seconds where the consumer thread kicks in and itterates  
+	through the array and outputs the audio, emptying the array as it does so.
+	
+	
