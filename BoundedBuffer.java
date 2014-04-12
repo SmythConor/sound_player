@@ -1,66 +1,66 @@
+import java.io.*;
+import javax.sound.sampled.*;
 class BoundedBuffer {
-	byte[] audioChunks;
+	int[] audioChunks; //buffer
 
 	int nextIn;
 	int nextOut;
 	int size;
+	int occupied;
 	boolean dataAvailable;
 	boolean roomAvailable;
 
 	public BoundedBuffer() {
 		size = 10;
-		audioChunks = new byte[size];
+		audioChunks = new int[size];
 		roomAvailable = true;
 		dataAvailable = false;
 		nextIn = 0;
 		nextOut = 0;
+		occupied = 0;
 	}
 
-	public synchronized void insertChunk(byte chunk) {
+	public synchronized void insertChunk(int chunk) {
 		while(!roomAvailable) { //if buffer is full waits for signal to contiute
+			notifyAll();
 			try {
 				wait();
 			} catch (InterruptedException e) { }
-
 		}
 
-//		else {
-			byte audioChunk = chunk;
-			audioChunks[nextIn % size] = audioChunk;
-			nextIn++;
-			size++;
+		audioChunks[nextIn % size] = chunk; //Insert chunk into buffer
 
-			if(size > 9) {
-				roomAvailable = false;
-			}
+		nextIn++;
+		dataAvailable = true; //indicate dataAvailable
+		occupied++;
 
-			notifyAll();
-	//	}
+		if(occupied == 10) { //indicate no roomAvailable
+			roomAvailable = false;
+		}
 
 	}//insetChunk
 
-	public synchronized byte removeChunk() {
-		byte out = 0;
+	public synchronized int removeChunk() {
+		int out = 0;
 		while(!dataAvailable) { //if no data wait for signal
+			notifyAll();
 			try {
 				wait();
 			} catch (InterruptedException e) { }
 
 		}
 
-		//else {
-			out = audioChunks[nextOut % size];
 
-			nextOut++;
-			size--;
+		out = audioChunks[nextOut % size]; //remove chunk to return
 
-			if(size == 0) {
-				dataAvailable = false;
-			}
+		nextOut++; //update where to take from
+		occupied--;
 
-			notifyAll();
-		//}
+		if(occupied == 0) { //if none left change variables //changed from 0
+			dataAvailable = false;
+			roomAvailable = true;
+		}
 
-		return out;
+		return out; //return chunk
 	}//removeChunk
 }//BoundedBuffer
